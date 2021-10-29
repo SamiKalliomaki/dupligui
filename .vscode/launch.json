@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Note: Does not work for some reason.
+            "type": "node",
+            "request": "launch",
+            "name": "Start dev",
+            "runtimeExecutable": "yarn",
+            "runtimeArgs": [
+                "start:dev"
+            ],
+            "cwd": "${workspaceFolder}",
+        }
+    ]
+}

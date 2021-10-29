@@ -1,0 +1,108 @@
+{
+  "name": "dupligui",
+  "productName": "Dupligui",
+  "version": "0.0.1",
+  "description": "GUI for scheduling duplicacy backup tasks.",
+  "main": ".webpack/main",
+  "scripts": {
+    "start": "electron-forge start",
+    "start:dev": "electron-forge start -- --dev",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx ."
+  },
+  "keywords": [
+    "duplicacy",
+    "backup"
+  ],
+  "author": "Dupligui",
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "./third_party/material_icons/cloud_circle.ico"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "dupligui"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ],
+      "plugins": [
+        [
+          "@electron-forge/plugin-webpack",
+          {
+            "mainConfig": "./webpack.main.config.js",
+            "renderer": {
+              "config": "./webpack.renderer.config.js",
+              "entryPoints": [
+                {
+                  "html": "./src/renderer/index.html",
+                  "js": "./src/renderer/app.tsx",
+                  "preload": {
+                    "js": "./src/renderer/preload.ts"
+                  },
+                  "name": "main_window"
+                }
+              ]
+            }
+          }
+        ]
+      ]
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
+    "@electron-forge/cli": "^6.0.0-beta.61",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+    "@electron-forge/maker-zip": "^6.0.0-beta.61",
+    "@electron-forge/plugin-webpack": "6.0.0-beta.61",
+    "@types/react-dom": "^17.0.10",
+    "@types/react-router-dom": "^5.3.2",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "@vercel/webpack-asset-relocator-loader": "1.7.0",
+    "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^6.0.0",
+    "electron": "15.3.0",
+    "eslint": "^7.6.0",
+    "eslint-plugin-import": "^2.20.0",
+    "fork-ts-checker-webpack-plugin": "^6.0.1",
+    "node-loader": "^2.0.0",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.0.0",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.0.2",
+    "webpack": "^5.60.0"
+  },
+  "dependencies": {
+    "bulma": "^0.9.3",
+    "cron-parser": "^4.1.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.3.0"
+  }
+}
