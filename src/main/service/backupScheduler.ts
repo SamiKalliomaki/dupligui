@@ -135,7 +135,7 @@ async function clearPendingBackups() {
 		if (config.backupState === 'pending' || config.backupState === 'executing') {
 			await updateDirectoryConfigByPath(directory.path, {
 				backupState: 'error',
-				lastBackupResult: 'Dupligui was while backup was ' + config.backupState + '.'
+				lastBackupResult: 'Dupligui was closed while backup was ' + config.backupState + '.'
 			});
 		}
 	}

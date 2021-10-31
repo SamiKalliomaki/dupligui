@@ -25,6 +25,10 @@ import path from 'path';
 import './ipc/directoryList';
 import './ipc/directoryConfig';
 import './ipc/appConfig';
+import './ipc/backup';
+
+// Ensure backup scheduler starts running.
+import './service/backupScheduler';
 
 declare global {
   var tray: Tray | null;

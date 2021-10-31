@@ -22,10 +22,16 @@ export class BackupLog extends React.Component<BackupLogProps, {
 	}
 
 	async refresh() {
-		let config = await window.ipc.getDirectoryConfig(this.props.match.params.name);
-		this.setState({
-			log: config.lastBackupLog
-		});
+		try {
+			let log = await window.ipc.getBackupLog(this.props.match.params.name);
+			this.setState({
+				log: log
+			});
+		} catch (e) {
+			this.setState({
+				log: 'Error: ' + e.message
+			});
+		}
 	}
 
 	render() {

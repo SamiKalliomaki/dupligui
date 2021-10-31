@@ -32,7 +32,6 @@ export interface DirectoryConfig {
 	lastModified: string | null;
 	backupState: 'idle' | 'pending' | 'executing' | 'done' | 'error';
 	lastBackupResult: string;
-	lastBackupLog: string;
 }
 
 export module DirectoryConfig {
@@ -43,7 +42,6 @@ export module DirectoryConfig {
 		lastModified: null,
 		backupState: 'idle',
 		lastBackupResult: '',
-		lastBackupLog: '',
 	}
 
 	export function sanitize(value: DeepPartial<DirectoryConfig>): DirectoryConfig {

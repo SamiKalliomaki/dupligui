@@ -13,6 +13,8 @@ export interface IpcApi {
 
 	getAppConfig: () => Promise<AppConfig>;
 	setAppConfig: (newConfig: AppConfig) => Promise<void>;
+
+	getBackupLog: (name: string) => Promise<string>;
 }
 
 export interface IpcObservables {
