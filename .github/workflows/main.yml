@@ -16,7 +16,8 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  build-win-x64:
+    name: Build for Windows x64
     # The type of runner that the job will run on
     runs-on: windows-latest
 
@@ -43,6 +44,7 @@ jobs:
       - name: Archive binaries
         uses: actions/upload-artifact@v2
         with:
-          name: windows-binaries
+          name: bin-win-x64
           path: out/make/squirrel.windows/x64/*.exe
           if-no-files-found: error
+          retention-days: 1
