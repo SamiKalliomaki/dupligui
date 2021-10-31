@@ -1,22 +1,61 @@
-import { app, ipcMain, dialog } from "electron";
+import { app } from "electron";
 import { promises as fsasync } from "fs";
 import fs from "fs";
 import path from "path";
 
 import { DirectoryListConfig, DirectoryListEntry } from "data/directories";
-import { handleIpc } from "./util";
-import { Observable } from "./observable";
-import { kDuplicacyDir, kPrettyWriteIndent } from "data/util";
 import { FormError, SingleFormError } from "data/ipc";
+import { kDuplicacyDir, kPrettyWriteIndent } from "data/util";
+import { Observable } from "../ipc/observable";
+import { eventBus } from "./eventBus";
 
 const kDirectorySettingsFile = path.join(app.getPath('userData'), 'directories.json');
 const directoryList: Observable<'directories'> = new Observable('directories', loadDirectories)
 
-async function loadDirectories(): Promise<Readonly<DirectoryListConfig>> {
-	if (directoryList.value != null) {
-		return directoryList.value;
+export async function getDirectoryListConfig(): Promise<DirectoryListConfig> {
+	return directoryList.getValue();
+}
+
+export async function getDirectoryPath(name: string): Promise<string> {
+	let directoryList = await getDirectoryListConfig();
+	let entry = directoryList.directories.find(v => v.name == name);
+	if (entry === undefined) {
+		throw new Error('Unknown directory.');
+	}
+	return entry.path;
+}
+
+export async function addDirectory(newDir: DirectoryListEntry): Promise<null | FormError> {
+	let validationError = await validateDirectory(newDir);
+	if (validationError) {
+		return validationError;
 	}
 
+	let prevData = await directoryList.getValue()
+	directoryList.setValue({
+		...prevData,
+		directories: [...prevData.directories, newDir]
+	});
+	await saveDirectories();
+
+	eventBus.emit('directoryConfigUpdate');
+
+	return null;
+}
+
+export async function removeDirectory(name: string): Promise<void> {
+	let prevData = await directoryList.getValue()
+	let newDirs = prevData.directories.filter(v => v.name != name);
+
+	directoryList.setValue({
+		...prevData,
+		directories: newDirs
+	});
+	await saveDirectories();
+}
+
+// Helpers
+async function loadDirectories(): Promise<Readonly<DirectoryListConfig>> {
 	try {
 		let directoriesString = await fsasync.readFile(kDirectorySettingsFile, 'utf-8');
 		return DirectoryListConfig.sanitize(JSON.parse(directoriesString));
@@ -35,29 +74,7 @@ async function saveDirectories() {
 		kDirectorySettingsFile, JSON.stringify(dirs, null, kPrettyWriteIndent), 'utf-8');
 }
 
-export async function getDirectoryListConfig(): Promise<DirectoryListConfig> {
-	return directoryList.getValue();
-}
-
-handleIpc('selectDirectory', async (event) => {
-	if (mainWindow == null) {
-		throw new Error('Main window closed.');
-	}
-
-	const result = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory'] });
-	if (result.canceled) {
-		return {
-			cancelled: true,
-			path: ''
-		};
-	}
-	return {
-		cancelled: false,
-		path: result.filePaths[0]
-	};
-});
-
-async function validateDirectory(dir: DirectoryListEntry): Promise<null | FormError> {
+export async function validateDirectory(dir: DirectoryListEntry): Promise<null | FormError> {
 	let errors: SingleFormError[] = []
 
 	if (!dir.name.match(DirectoryListEntry.kValidName)) {
@@ -115,29 +132,3 @@ async function validateDirectory(dir: DirectoryListEntry): Promise<null | FormEr
 	return null;
 }
 
-handleIpc('addDirectory', async (event, newDir: DirectoryListEntry) => {
-	let validationError = await validateDirectory(newDir);
-	if (validationError) {
-		return validationError;
-	}
-
-	let prevData = await directoryList.getValue()
-	directoryList.setValue({
-		...prevData,
-		directories: [...prevData.directories, newDir]
-	});
-	await saveDirectories();
-
-	return null;
-});
-
-handleIpc('removeDirectory', async (event, dir: DirectoryListEntry) => {
-	let prevData = await directoryList.getValue()
-	let newDirs = prevData.directories.filter(v => v.name != dir.name);
-
-	directoryList.setValue({
-		...prevData,
-		directories: newDirs
-	});
-	await saveDirectories();
-});

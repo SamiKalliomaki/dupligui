@@ -22,7 +22,7 @@ console.log('App starting');
 
 import path from 'path';
 
-import './ipc/directories';
+import './ipc/directoryList';
 import './ipc/directoryConfig';
 import './ipc/appConfig';
 
