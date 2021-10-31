@@ -1,4 +1,3 @@
-import { StringResult } from "cron-parser";
 import { DeepPartial } from "./util";
 
 export interface CronScheduleConfig {
