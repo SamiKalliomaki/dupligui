@@ -18,12 +18,13 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
@@ -37,10 +38,10 @@ jobs:
         run: yarn
           
       - name: Build for Windows
-        run: yarn make --platform win32
+        run: yarn make --platform win32 --arch x64
       
       - name: Archive binaries
         uses: actions/upload-artifact@v2
         with:
           name: windows-binaries
-          path: out/squirrel.windows/*.exe
+          path: out/squirrel.windows/x64/*.exe
