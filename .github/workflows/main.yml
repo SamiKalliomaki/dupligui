@@ -33,7 +33,11 @@ jobs:
           # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm
           cache: 'yarn'
           
-      - run: yarn make --platform win32
+      - name: Install dependencies
+        run: yarn
+          
+      - name: Build for Windows
+        run: yarn make --platform win32
       
       - name: Archive binaries
         uses: actions/upload-artifact@v2
