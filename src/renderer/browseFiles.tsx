@@ -68,8 +68,12 @@ class SnapshotList extends React.Component<SnapshotListProps, {
 }
 
 function humanReadableSize(bytes: number) {
+	if (bytes < 1024) {
+		`${bytes} bytes`;
+	}
+
 	let humanSize = bytes;
-	let sizeUnits = ['B', 'KiB', 'MiB', 'GiB', 'TiB'];
+	let sizeUnits = ['KiB', 'MiB', 'GiB', 'TiB'];
 	let sizeUnit = sizeUnits[0];
 	for (const unit of sizeUnits) {
 		if (humanSize < 1024) {
@@ -80,7 +84,7 @@ function humanReadableSize(bytes: number) {
 		sizeUnit = unit;
 	}
 
-	return `${humanSize} ${sizeUnit}`;
+	return `${humanSize.toFixed(2)} ${sizeUnit}`;
 }
 
 type DirectoryViewProps = {
@@ -93,7 +97,6 @@ class DirectoryView extends React.Component<DirectoryViewProps> {
 		const directoryRoutes = Object.values(this.props.root.subdirs).map((dir) => {
 			return <Route key={dir.name}
 				path={`${this.props.url}/${encodeURIComponent(dir.name)}`}
-				exact
 				render={(routeProps) => {
 					return <DirectoryView root={dir} url={routeProps.match.url} parentUrl={this.props.url} />;
 				}} />
@@ -110,8 +113,6 @@ class DirectoryView extends React.Component<DirectoryViewProps> {
 					</Link>
 				});
 				const files = Object.values(this.props.root.files).map((file) => {
-
-
 					return <span key={file.name}
 						className="panel-block is-justify-content-space-between">
 						<div className="is-pulled-left is-flex-shrink-0">

@@ -6,7 +6,7 @@ import { runDuplicacyWithOutput } from "../service/duplicacy";
 import { handleIpc } from "./util";
 
 const kSnapshotListRegex = /^Snapshot .+ revision (\d+) created at (.*[^\s])\s*$/;
-const kFileListRegex = /^\s*(\d+)\s+([^\s]+\s+[^\s]+)\s+([^\s]*)\s+([^\s](.*[^\s])?)$/;
+const kFileListRegex = /^\s*(\d+) ([^\s]+ [^\s]+) ([^\s]*)\s+([^\s](.*[^\s])?)$/;
 
 handleIpc('getSnapshotList', async (event, name) => {
 	let output = await runDuplicacyWithOutput(['list'], await getDirectoryPath(name), null);
