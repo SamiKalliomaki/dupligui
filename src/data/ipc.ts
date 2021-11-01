@@ -22,3 +22,8 @@ export interface DirectoryStats {
 export interface AppConfig {
 	openAtLogin: boolean
 }
+
+export interface DuplicacySnapshotListEntry {
+	revision: number,
+	date: string
+}

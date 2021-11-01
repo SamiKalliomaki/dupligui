@@ -26,6 +26,7 @@ import './ipc/directoryList';
 import './ipc/directoryConfig';
 import './ipc/appConfig';
 import './ipc/backup';
+import './ipc/duplicacy';
 
 // Ensure backup scheduler starts running.
 import './service/backupScheduler';

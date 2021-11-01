@@ -10,6 +10,7 @@ import { AppConfigPage } from './config';
 import Directories from './directories';
 import { BackupSchedule } from './backupSchedule';
 import { BackupLog } from './backupLog';
+import { BrowseFiles } from './browseFiles';
 
 export function AppLink(props: React.PropsWithChildren<{
 	to: string
@@ -55,6 +56,7 @@ export class App extends React.Component<{}, {
 				<li>
 					<AppLink to={"/backup-schedule/" + directory.name}>Backup schedule</AppLink>
 					<AppLink to={"/backup-log/" + directory.name}>Backup log</AppLink>
+					<AppLink to={"/browse-files/" + directory.name}>Browse files</AppLink>
 				</li>
 			</ul>
 		]);
@@ -89,6 +91,7 @@ export class App extends React.Component<{}, {
 							<Route path="/directories" component={Directories} />
 							<Route path="/backup-schedule/:name" component={BackupSchedule} />
 							<Route path="/backup-log/:name" component={BackupLog} />
+							<Route path="/browse-files/:name" component={BrowseFiles} />
 						</Switch>
 					</div>
 				</div>
