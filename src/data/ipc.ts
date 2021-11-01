@@ -27,3 +27,24 @@ export interface DuplicacySnapshotListEntry {
 	revision: number,
 	date: string
 }
+
+export interface DuplicacyDirectoryEntry {
+	subdirs: {
+		[name in string]: DuplicacyDirectoryEntry
+	},
+	files: {
+		[name in string]: DuplicacyFileEntry
+	},
+
+	fullPath: string,
+	name: string,
+	size: number,
+}
+
+export interface DuplicacyFileEntry {
+	size: number,
+	modificationDate: string,
+	hash: string,
+	fullPath: string,
+	name: string,
+}

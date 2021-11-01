@@ -1,4 +1,4 @@
-import { AppConfig, DirectoryStats, DuplicacySnapshotListEntry, FormError, SelectDirectoryResult } from "data/ipc";
+import { AppConfig, DirectoryStats, DuplicacyDirectoryEntry, DuplicacySnapshotListEntry, FormError, SelectDirectoryResult } from "data/ipc";
 import { DirectoryListConfig, DirectoryListEntry } from "./directories";
 import { DirectoryConfig } from "./directoryConfig";
 
@@ -22,6 +22,7 @@ export interface IpcApi {
 
 	// duplicacy
 	getSnapshotList: (dirName: string) => Promise<ReadonlyArray<DuplicacySnapshotListEntry>>;
+	getSnapshotFileList: (dirName: string, revision: number) => Promise<DuplicacyDirectoryEntry>;
 }
 
 export interface IpcObservables {

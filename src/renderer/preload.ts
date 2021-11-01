@@ -26,6 +26,7 @@ let ipc: IpcApi = {
 	getBackupLog: forwardIpc('getBackupLog'),
 
 	getSnapshotList: forwardIpc('getSnapshotList'),
+	getSnapshotFileList: forwardIpc('getSnapshotFileList'),
 };
 
 let observerBinders: IpcObserverBinders = {
