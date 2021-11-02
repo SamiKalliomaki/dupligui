@@ -35,18 +35,18 @@ export class Observable<T extends keyof IpcObservables> {
 		});
 	}
 
-	public get value(): IpcObservables[T] | null {
-		return this._value && { ...this._value };
+	public get value(): Readonly<IpcObservables[T]> | null {
+		return this._value;
 	}
 
-	public async getValue(): Promise<IpcObservables[T]> {
+	public async getValue(): Promise<Readonly<IpcObservables[T]>> {
 		if (this._value != null) {
-			return { ...this._value };
+			return this._value;
 		}
 
 		let initialValue = await this._initialValue();
 		this.setValue(initialValue);
-		return { ...initialValue };
+		return initialValue;
 	}
 
 	public setValue(newValue: Readonly<IpcObservables[T]>) {

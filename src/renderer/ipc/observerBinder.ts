@@ -6,6 +6,7 @@ export interface ObserverBinder<T extends keyof IpcObservables> {
 
 	registerObserver(observer: Observer<T>): void;
 	unregisterObserver(observer: Observer<T>): void;
+	getValue(): Promise<IpcObservables[T]>;
 }
 
 export type IpcObserverBinders = {

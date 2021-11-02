@@ -20,6 +20,21 @@ export class ObserverBinderImpl<T extends keyof IpcObservables> implements Obser
 		return this._value;
 	}
 
+	async getValue(): Promise<IpcObservables[T]> {
+		if (this._observers.length == 0 || this._value == null) {
+			let result = new Promise<IpcObservables[T]>((resolve) => {
+				ipcRenderer.once('observableValue_' + this._name, (event, newValue) => {
+					resolve(newValue);
+				});
+			});
+			ipcRenderer.invoke('requestObservable_' + this._name);
+
+			return result;
+		} else {
+			return this._value;
+		}
+	}
+
 	registerObserver(observer: Observer<T>) {
 		if (this._observers.length == 0 && this._value == null) {
 			ipcRenderer.invoke('requestObservable_' + this._name);

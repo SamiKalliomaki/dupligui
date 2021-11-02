@@ -9,5 +9,6 @@ declare global {
 		ipc: IpcApi;
 		registerObserver: ObserverRegistration;
 		unregisterObserver: ObserverRegistration;
+		getValue: <T extends keyof IpcObservables>(name: T) => Promise<IpcObservables[T]>;
 	}
 }

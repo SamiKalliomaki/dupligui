@@ -1,4 +1,5 @@
-import { AppConfig, DirectoryStats, DuplicacyDirectoryEntry, DuplicacySnapshotListEntry, FormError, SelectDirectoryResult } from "data/ipc";
+import { DirectoryStats, DuplicacyDirectoryEntry, DuplicacySnapshotListEntry, FormError, SelectDirectoryResult } from "data/ipc";
+import { AppConfig } from "./appConfig";
 import { DirectoryListConfig, DirectoryListEntry } from "./directories";
 import { DirectoryConfig } from "./directoryConfig";
 
@@ -14,8 +15,7 @@ export interface IpcApi {
 	getDirectoryStats: (name: string) => Promise<DirectoryStats>;
 
 	// appConfig
-	getAppConfig: () => Promise<AppConfig>;
-	setAppConfig: (newConfig: AppConfig) => Promise<void>;
+	updateAppConfig: (newConfig: AppConfig) => Promise<void>;
 
 	// backup
 	getBackupLog: (name: string) => Promise<string>;
@@ -26,5 +26,6 @@ export interface IpcApi {
 }
 
 export interface IpcObservables {
-	directories: DirectoryListConfig
+	directories: DirectoryListConfig;
+	appConfig: AppConfig;
 }

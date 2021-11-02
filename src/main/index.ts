@@ -1,26 +1,11 @@
+import path from 'path';
 import { app, BrowserWindow, Tray, Menu } from 'electron';
-
-console.log('Hello world from index.ts');
-
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
-  app.quit();
-}
 
 let dev = app.commandLine.hasSwitch('dev')
 if (dev) {
   console.log('Running in dev mode');
-  app.setName(app.getName() + '-dev')
+  app.setName(app.getName() + '-dev');
 }
-
-const singleInstanceLock = app.requestSingleInstanceLock()
-if (!singleInstanceLock) {
-  app.quit()
-}
-
-console.log('App starting');
-
-import path from 'path';
 
 import './ipc/directoryList';
 import './ipc/directoryConfig';
@@ -28,8 +13,33 @@ import './ipc/appConfig';
 import './ipc/backup';
 import './ipc/duplicacy';
 
+import { registerOpenOnLogin, unregisterOpenOnLogin } from './service/appConfig';
 // Ensure backup scheduler starts running.
 import './service/backupScheduler';
+
+console.log('Hello world from index.ts');
+
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+var squirrelCommand = process.argv[1];
+switch (squirrelCommand) {
+  case '--squirrel-install':
+  case '--squirrel-updated':
+    registerOpenOnLogin();
+    app.quit();
+    break;
+  case '--squirrel-obsolete':
+  case '--squirrel-uninstall':
+    unregisterOpenOnLogin();
+    app.quit();
+    break;
+}
+
+const singleInstanceLock = app.requestSingleInstanceLock()
+if (!singleInstanceLock) {
+  app.quit();
+}
+
+console.log('App starting');
 
 declare global {
   var tray: Tray | null;

@@ -1,14 +1,6 @@
-import { app } from "electron";
+import { updateAppConfig } from "../service/appConfig";
 import { handleIpc } from "./util";
 
-handleIpc('getAppConfig', async (event) => {
-	return {
-		openAtLogin: app.getLoginItemSettings().openAtLogin
-	}
-});
-
-handleIpc('setAppConfig', async (event, newConfig) => {
-	app.setLoginItemSettings({
-		openAtLogin: newConfig.openAtLogin
-	});
+handleIpc('updateAppConfig', async (event, newConfig) => {
+	updateAppConfig(newConfig);
 });

@@ -1,7 +1,7 @@
-import { AppConfig } from "data/ipc";
 import React from "react";
 import ReactRouter from "react-router";
 
+import { AppConfig } from "data/appConfig";
 import { Page } from './page';
 import { FormErrorState, kClearFormErrorState, toFormErrorState } from "./utils";
 
@@ -25,7 +25,7 @@ export class AppConfigPage extends React.Component<AppConfigPageProps, FormError
 	}
 
 	async reload() {
-		let config = await window.ipc.getAppConfig();
+		let config = await window.getValue('appConfig');
 		this.setState({
 			config: config
 		});
@@ -33,7 +33,7 @@ export class AppConfigPage extends React.Component<AppConfigPageProps, FormError
 
 	async save() {
 		try {
-			let result = await window.ipc.setAppConfig(this.state.config);
+			await window.ipc.updateAppConfig(this.state.config);
 			this.setState(kClearFormErrorState);
 		} catch (e) {
 			this.setState(toFormErrorState(e));

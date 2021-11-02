@@ -19,10 +19,6 @@ export interface DirectoryStats {
 	nextBackup: string | null,
 }
 
-export interface AppConfig {
-	openAtLogin: boolean
-}
-
 export interface DuplicacySnapshotListEntry {
 	revision: number,
 	date: string

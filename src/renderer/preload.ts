@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from "electron"
 import { IpcApi, IpcObservables } from "data/ipcApi"
 import { ObserverBinderImpl } from "./ipc/observerBinderImpl";
-import { IpcObserverBinders } from "./ipc/observerBinder";
+import { IpcObserverBinders, ObserverBinder } from "./ipc/observerBinder";
 import { Observer } from "./ipc/observer";
 
 function forwardIpc<IpcName extends keyof IpcApi>(ipcName: IpcName): IpcApi[IpcName] {
@@ -20,8 +20,7 @@ let ipc: IpcApi = {
 	updateDirectoryConfig: forwardIpc('updateDirectoryConfig'),
 	getDirectoryStats: forwardIpc('getDirectoryStats'),
 
-	getAppConfig: forwardIpc('getAppConfig'),
-	setAppConfig: forwardIpc('setAppConfig'),
+	updateAppConfig: forwardIpc('updateAppConfig'),
 
 	getBackupLog: forwardIpc('getBackupLog'),
 
@@ -30,17 +29,23 @@ let ipc: IpcApi = {
 };
 
 let observerBinders: IpcObserverBinders = {
-	directories: new ObserverBinderImpl('directories')
+	directories: new ObserverBinderImpl('directories'),
+	appConfig: new ObserverBinderImpl('appConfig'),
 }
 
 function registerObserver<T extends keyof IpcObservables>(name: T, observer: Observer<T>) {
-	observerBinders[name].registerObserver(observer);
+	(<ObserverBinder<T>>observerBinders[name]).registerObserver(observer);
 }
 
 function unregisterObserver<T extends keyof IpcObservables>(name: T, observer: Observer<T>) {
-	observerBinders[name].unregisterObserver(observer);
+	(<ObserverBinder<T>>observerBinders[name]).unregisterObserver(observer);
+}
+
+function getValue<T extends keyof IpcObservables>(name: T): Promise<IpcObservables[T]> {
+	return (<ObserverBinder<T>>observerBinders[name]).getValue();
 }
 
 contextBridge.exposeInMainWorld('ipc', ipc);
 contextBridge.exposeInMainWorld('registerObserver', registerObserver);
 contextBridge.exposeInMainWorld('unregisterObserver', unregisterObserver);
+contextBridge.exposeInMainWorld('getValue', getValue);
