@@ -21,6 +21,7 @@ module.exports = {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
     alias: {
       data: path.resolve(__dirname, 'src/data/'),
+      third_party: path.resolve(__dirname, 'third_party/'),
     },
   },
   devtool: 'source-map',

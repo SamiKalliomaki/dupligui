@@ -46,6 +46,9 @@ class SnapshotList extends React.Component<SnapshotListProps, {
 			return <Link key={snapshot.revision}
 				to={this.props.match.url + '/' + snapshot.revision}
 				className="panel-block">
+				<span className="panel-icon">
+					<span className="md-icon md-collections-bookmark-black" />
+				</span>
 				Revision #{snapshot.revision} from {snapshot.date}
 			</Link>
 		});
@@ -108,6 +111,9 @@ class DirectoryView extends React.Component<DirectoryViewProps> {
 					return <Link key={dir.name}
 						to={`${this.props.url}/${encodeURIComponent(dir.name)}`}
 						className="panel-block">
+						<span className="panel-icon">
+							<span className="md-icon md-folder-black" />
+						</span>
 						{dir.name}
 						<span className="has-text-grey-light ml-1">{humanReadableSize(dir.size)}</span>
 					</Link>
@@ -116,6 +122,9 @@ class DirectoryView extends React.Component<DirectoryViewProps> {
 					return <span key={file.name}
 						className="panel-block is-justify-content-space-between">
 						<div className="is-pulled-left is-flex-shrink-0">
+							<span className="vcenter-icon">
+								<span className="md-icon md-description-black" />
+							</span>
 							{file.name}
 							<span className="has-text-grey-light ml-1">{humanReadableSize(file.size)}</span>
 						</div>
@@ -126,7 +135,12 @@ class DirectoryView extends React.Component<DirectoryViewProps> {
 				});
 
 				return <div>
-					<Link className="panel-block" to={this.props.parentUrl}>..</Link>
+					<Link className="panel-block" to={this.props.parentUrl}>
+						<span className="panel-icon">
+							<span className="md-icon md-arrow-back-black" />
+						</span>
+						..
+					</Link>
 					{directories}
 					{files}
 				</div>;

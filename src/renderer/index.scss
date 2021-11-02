@@ -8,6 +8,7 @@
 @import "node_modules/bulma/sass/elements/other.sass";
 @import "node_modules/bulma/sass/elements/content.sass";
 @import "node_modules/bulma/sass/elements/progress.sass";
+@import "node_modules/bulma/sass/elements/icon.sass";
 
 @import "node_modules/bulma/sass/components/menu.sass";
 @import "node_modules/bulma/sass/components/card.sass";
@@ -30,4 +31,36 @@ body {
 .is-overflow-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.vcenter-icon {
+  display: inline-block;
+  font-size: 14px;
+  height: 100%;
+  line-height: 1em;
+  vertical-align: middle;
+  margin-right: 0.75em;
+}
+
+.md-icon {
+  display: inline-block;
+  background-size: contain;
+  width: 1em;
+  height: 1em;
+}
+
+.md-description-black {
+  background-image: url('third_party/material_icons/description_black_24dp.svg');
+}
+
+.md-folder-black {
+  background-image: url('third_party/material_icons/folder_black_24dp.svg');
+}
+
+.md-arrow-back-black {
+  background-image: url('third_party/material_icons/arrow_back_black_24dp.svg');
+}
+
+.md-collections-bookmark-black {
+  background-image: url('third_party/material_icons/collections_bookmark_black_24dp.svg');
 }
